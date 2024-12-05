@@ -56,11 +56,22 @@ FinishButton_XPATH = '//*[@id="app"]/div/section/div/form/div[6]/div/button[3]'
 CancelButton_XPATH = '//*[@id="app"]/div/section/div/form/div[6]/div/button[1]'
 
 # 以下：默认配置/读取设置
+
+class Configures:
+    def __init__(self):
+        return
+    def GetProfilePath(self):
+        with open('Configures.json', 'r') as cfg:
+            self.FilePath = json.load(cfg)['usingProfilePath']
+        return self.FilePath
+
+'''
 FilePath = ''
 PhoneNum = ''
 StartTime = '2024-12-06 11:45'
 FinishTime = '2024-12-06 17:54'
 UsingDefaultTime = "True"
+UsingAutoReport = "False"
 ExpectStartHour = '12'
 ExpectFinishHour = '15'
 Height = ''
@@ -72,6 +83,7 @@ Speed = '垂直起降；水平最大10m/s，垂直最大3m/s'
 ControlAbilities = '无'
 Radar = '无'
 Other = '将使用辅助飞行并最大程度保证飞行安全，将绕开敏感并避开敏感区域，做到安全飞行。希望批准，谢谢！'
+'''
 
 def GetProfilePath():
     global FilePath
@@ -80,11 +92,13 @@ def GetProfilePath():
     return FilePath
 
 def GetConfigures(path):
-    global StartTime, FinishTime, Location, PhoneNum, ExpectStartHour, ExpectFinishHour
+    global StartTime, FinishTime, Location, PhoneNum, ExpectStartHour, ExpectFinishHour, UsingAutoReport
     global Height, Location, EmergencyProcess, SpecialReq, Abilities, Speed, ControlAbilities, Radar, Other
     with open(path, 'r', encoding='utf-8') as profile:
         profileCfg = json.load(profile)
         UsingDefaultTime = profileCfg['app']['usingDefaultTime']
+        UsingAutoReport = profileCfg['app']['autoReport']
+
         PhoneNum = profileCfg['login']['phoneNum']
         StartTime = profileCfg['content']['startTime']
         FinishTime = profileCfg['content']['finishTime']

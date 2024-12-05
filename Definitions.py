@@ -57,7 +57,6 @@ CancelButton_XPATH = '//*[@id="app"]/div/section/div/form/div[6]/div/button[1]'
 
 # 以下：默认配置/读取设置
 FilePath = ''
-
 PhoneNum = ''
 StartTime = '2024-12-06 11:45'
 FinishTime = '2024-12-06 17:54'
@@ -78,6 +77,7 @@ def GetProfilePath():
     global FilePath
     with open('Configures.json', 'r') as cfg:
         FilePath = json.load(cfg)['usingProfilePath']
+    return FilePath
 
 def GetConfigures(path):
     global StartTime, FinishTime, Location, PhoneNum, ExpectStartHour, ExpectFinishHour
@@ -127,12 +127,10 @@ def DefaultFinishTime():
         return (expectFinishTime + datetime.timedelta(days=2)).strftime("%Y-%m-%d %H:%M")
 
 if __name__ == "__module__":
-    GetProfilePath()
-    GetConfigures(FilePath)
+    GetConfigures(GetProfilePath())
 
 if __name__ == "__main__":
-    GetProfilePath()
-    print(FilePath)
+    print(GetProfilePath())
     print(DefaultStartTime())
     print(DefaultFinishTime())
     GetConfigures(FilePath)

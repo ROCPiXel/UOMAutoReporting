@@ -59,93 +59,62 @@ CancelButton_XPATH = '//*[@id="app"]/div/section/div/form/div[6]/div/button[1]'
 
 class Configures:
     def __init__(self):
-        return
+        self.GetProfilePath()
+        with open(self.FilePath, 'r', encoding='utf-8') as profile:
+            profileCfg = json.load(profile)
+            self.UsingDefaultTime = profileCfg['app']['usingDefaultTime']
+            self.UsingAutoReport = profileCfg['app']['autoReport']
+    
+            self.PhoneNum = profileCfg['login']['phoneNum']
+            self.StartTime = profileCfg['content']['startTime']
+            self.FinishTime = profileCfg['content']['finishTime']
+            self.ExpectStartHour = profileCfg['content']['expectStartHour']
+            self.ExpectFinishHour = profileCfg['content']['expectFinishHour']
+   
+            self.Height = profileCfg['content']['height']
+            self.Location = profileCfg['content']['location']
+            self.EmergencyProcess = profileCfg['content']['emergencyProcess']
+            self.SpecialReq = profileCfg['content']['specialReq']
+            self.Abilities = profileCfg['content']['abilities']
+            self.Speed = profileCfg['content']['speed']
+            self.ControlAbilities = profileCfg['content']['controlAbilities']
+            self.Radar = profileCfg['content']['radar']
+            self.Other = profileCfg['content']['other']
+
+        if self.UsingDefaultTime == "True":
+            self.StartTime = self.DefaultStartTime()
+            self.inishTime = self.DefaultFinishTime()
+
     def GetProfilePath(self):
         with open('Configures.json', 'r') as cfg:
             self.FilePath = json.load(cfg)['usingProfilePath']
         return self.FilePath
-
-'''
-FilePath = ''
-PhoneNum = ''
-StartTime = '2024-12-06 11:45'
-FinishTime = '2024-12-06 17:54'
-UsingDefaultTime = "True"
-UsingAutoReport = "False"
-ExpectStartHour = '12'
-ExpectFinishHour = '15'
-Height = ''
-Location = ''
-EmergencyProcess = '紧急情况立即检查并降落'
-SpecialReq = '无'
-Abilities = 'Remote ID，导航定位，遥控器信号等可被监视'
-Speed = '垂直起降；水平最大10m/s，垂直最大3m/s'
-ControlAbilities = '无'
-Radar = '无'
-Other = '将使用辅助飞行并最大程度保证飞行安全，将绕开敏感并避开敏感区域，做到安全飞行。希望批准，谢谢！'
-'''
-
-def GetProfilePath():
-    global FilePath
-    with open('Configures.json', 'r') as cfg:
-        FilePath = json.load(cfg)['usingProfilePath']
-    return FilePath
-
-def GetConfigures(path):
-    global StartTime, FinishTime, Location, PhoneNum, ExpectStartHour, ExpectFinishHour, UsingAutoReport
-    global Height, Location, EmergencyProcess, SpecialReq, Abilities, Speed, ControlAbilities, Radar, Other
-    with open(path, 'r', encoding='utf-8') as profile:
-        profileCfg = json.load(profile)
-        UsingDefaultTime = profileCfg['app']['usingDefaultTime']
-        UsingAutoReport = profileCfg['app']['autoReport']
-
-        PhoneNum = profileCfg['login']['phoneNum']
-        StartTime = profileCfg['content']['startTime']
-        FinishTime = profileCfg['content']['finishTime']
-        ExpectStartHour = profileCfg['content']['expectStartHour']
-        ExpectFinishHour = profileCfg['content']['expectFinishHour']
-
-        Height = profileCfg['content']['height']
-        Location = profileCfg['content']['location']
-        EmergencyProcess = profileCfg['content']['emergencyProcess']
-        SpecialReq = profileCfg['content']['specialReq']
-        Abilities = profileCfg['content']['abilities']
-        Speed = profileCfg['content']['speed']
-        ControlAbilities = profileCfg['content']['controlAbilities']
-        Radar = profileCfg['content']['radar']
-        Other = profileCfg['content']['other']
-
-    if UsingDefaultTime == "True":
-        StartTime = DefaultStartTime()
-        FinishTime = DefaultFinishTime()
-
-'''
-DefaultTime：返回str
-判断时间是否会被拦截，并给出可以申请的时间
-'''
-def DefaultStartTime():
-    now = datetime.datetime.now()
-    expectStartTime = datetime.datetime(year=now.year, month=now.month, day=now.day, hour=int(ExpectStartHour))
-    print(expectStartTime)
-    if now.hour < 12:
-        return (expectStartTime + datetime.timedelta(days=1)).strftime("%Y-%m-%d %H:%M")
-    else:
-        return (expectStartTime + datetime.timedelta(days=2)).strftime("%Y-%m-%d %H:%M")
-    
-def DefaultFinishTime():
-    now = datetime.datetime.now()
-    expectFinishTime = datetime.datetime(year=now.year, month=now.month, day=now.day, hour=int(ExpectFinishHour))
-    if now.hour < 12:
-        return (expectFinishTime + datetime.timedelta(days=1)).strftime("%Y-%m-%d %H:%M")
-    else:
-        return (expectFinishTime + datetime.timedelta(days=2)).strftime("%Y-%m-%d %H:%M")
+    '''
+    DefaultTime：返回str
+    判断时间是否会被拦截，并给出可以申请的时间
+    '''
+    def DefaultStartTime(self):
+        now = datetime.datetime.now()
+        self.expectStartTime = datetime.datetime(year=now.year, month=now.month, day=now.day, hour=int(self.ExpectStartHour))
+        if now.hour < 12:
+            return (self.expectStartTime + datetime.timedelta(days=1)).strftime("%Y-%m-%d %H:%M")
+        else:
+            return (self.expectStartTime + datetime.timedelta(days=2)).strftime("%Y-%m-%d %H:%M")
+    def DefaultFinishTime(self):
+        now = datetime.datetime.now()
+        self.expectFinishTime = datetime.datetime(year=now.year, month=now.month, day=now.day, hour=int(self.ExpectFinishHour))
+        if now.hour < 12:
+            return (self.expectFinishTime + datetime.timedelta(days=1)).strftime("%Y-%m-%d %H:%M")
+        else:
+            return (self.expectFinishTime + datetime.timedelta(days=2)).strftime("%Y-%m-%d %H:%M")
 
 if __name__ == "__module__":
-    GetConfigures(GetProfilePath())
+    init = Configures()
+    init.GetConfigures(init.GetProfilePath())
 
 if __name__ == "__main__":
-    print(GetProfilePath())
-    print(DefaultStartTime())
-    print(DefaultFinishTime())
-    GetConfigures(FilePath)
-    print(f'\n{StartTime},{FinishTime},{ExpectStartHour},{ExpectFinishHour}\n{Height}')
+    init = Configures()
+    print(init.GetProfilePath())
+    print(init.DefaultStartTime())
+    print(init.DefaultFinishTime())
+    print(f'\n{init.StartTime},{init.FinishTime},{init.ExpectStartHour},{init.ExpectFinishHour}\n{init.Height}')

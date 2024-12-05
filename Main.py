@@ -25,7 +25,7 @@ def FindElementIfExists(drive, xpath, waitTime=1):
     return drive.find_element(by.XPATH, xpath)
 
 def TryInputPhoneNum():
-    FindElementIfExists(driver, Definitions.PhoneNumInput_XPATH, waitTime=1).send_keys(Definitions.PhoneNum)
+    FindElementIfExists(driver, Definitions.PhoneNumInput_XPATH, waitTime=1).send_keys(profile.PhoneNum)
 
 def TryGetTabButton():
     FindElementIfExists(driver, Definitions.TabButton_XPATH, waitTime=1).click()
@@ -60,23 +60,23 @@ def CreateNewTask():
     print(f'[INFO] {str(datetime.datetime.now())} ----------已完成新建飞行任务，准备自动填写信息----------')
 
 def AutoFillContent():
-    CleanWithSend(FindElementIfExists(driver, Definitions.StartTimeBox_XPATH, 1), Definitions.StartTime)
-    CleanWithSend(FindElementIfExists(driver, Definitions.FinishTimeBox_XPATH, 1), Definitions.FinishTime)
+    CleanWithSend(FindElementIfExists(driver, Definitions.StartTimeBox_XPATH, 1), profile.StartTime)
+    CleanWithSend(FindElementIfExists(driver, Definitions.FinishTimeBox_XPATH, 1), profile.FinishTime)
     print(f'[INFO] {str(datetime.datetime.now())} 完成时间更改')
     driver.find_element(by.XPATH, Definitions.ChangeTypeBox_XPATH).click()
     FindElementIfExists(driver, Definitions.ChangeTypeButton_XPATH, 0.5).click()
     print(f'[INFO] {str(datetime.datetime.now())} 完成 任务性质 更改')
-    CleanWithSend(FindElementIfExists(driver, Definitions.HeightInput_XPATH, 1), Definitions.Height)
+    CleanWithSend(FindElementIfExists(driver, Definitions.HeightInput_XPATH, 1), profile.Height)
     print(f'[INFO] {str(datetime.datetime.now())} 完成高度更改')
 
-    CleanWithSend(driver.find_element(by.XPATH, Definitions.LocationInput_XPATH), Definitions.Location); print(f'[INFO] {str(datetime.datetime.now())} 完成 起降备降场地 更改')
-    CleanWithSend(driver.find_element(by.XPATH, Definitions.EmergencyProcessInput_XPATH), Definitions.EmergencyProcess); print(f'[INFO] {str(datetime.datetime.now())} 完成 应急处置程序 更改')
-    CleanWithSend(driver.find_element(by.XPATH, Definitions.SpecialReqInput_XPATH), Definitions.SpecialReq); print(f'[INFO] {str(datetime.datetime.now())} 完成 特殊飞行保障需求 更改')
-    CleanWithSend(driver.find_element(by.XPATH, Definitions.AbilitiesInput_XPATH), Definitions.Abilities); print(f'[INFO] {str(datetime.datetime.now())} 完成 通信、导航和被监视能力 更改')
-    CleanWithSend(driver.find_element(by.XPATH, Definitions.SpeedInput_XPATH), Definitions.Speed); print(f'[INFO] {str(datetime.datetime.now())} 完成 飞行速度和进出空域方法 更改')
-    CleanWithSend(driver.find_element(by.XPATH, Definitions.ControlInput_XPATH), Definitions.ControlAbilities); print(f'[INFO] {str(datetime.datetime.now())} 完成 指挥控制链路无线电频率以及占用带宽 更改')
-    CleanWithSend(driver.find_element(by.XPATH, Definitions.RadarInput_XPATH), Definitions.Radar); print(f'[INFO] {str(datetime.datetime.now())} 完成 二次雷达应答机或有关自动监视设备代码 更改')
-    CleanWithSend(driver.find_element(by.XPATH, Definitions.OtherInfoInput_XPATH), Definitions.Other); print(f'[INFO] {str(datetime.datetime.now())} 完成 其他必要信息 更改')
+    CleanWithSend(driver.find_element(by.XPATH, Definitions.LocationInput_XPATH), profile.Location); print(f'[INFO] {str(datetime.datetime.now())} 完成 起降备降场地 更改')
+    CleanWithSend(driver.find_element(by.XPATH, Definitions.EmergencyProcessInput_XPATH), profile.EmergencyProcess); print(f'[INFO] {str(datetime.datetime.now())} 完成 应急处置程序 更改')
+    CleanWithSend(driver.find_element(by.XPATH, Definitions.SpecialReqInput_XPATH), profile.SpecialReq); print(f'[INFO] {str(datetime.datetime.now())} 完成 特殊飞行保障需求 更改')
+    CleanWithSend(driver.find_element(by.XPATH, Definitions.AbilitiesInput_XPATH), profile.Abilities); print(f'[INFO] {str(datetime.datetime.now())} 完成 通信、导航和被监视能力 更改')
+    CleanWithSend(driver.find_element(by.XPATH, Definitions.SpeedInput_XPATH), profile.Speed); print(f'[INFO] {str(datetime.datetime.now())} 完成 飞行速度和进出空域方法 更改')
+    CleanWithSend(driver.find_element(by.XPATH, Definitions.ControlInput_XPATH), profile.ControlAbilities); print(f'[INFO] {str(datetime.datetime.now())} 完成 指挥控制链路无线电频率以及占用带宽 更改')
+    CleanWithSend(driver.find_element(by.XPATH, Definitions.RadarInput_XPATH), profile.Radar); print(f'[INFO] {str(datetime.datetime.now())} 完成 二次雷达应答机或有关自动监视设备代码 更改')
+    CleanWithSend(driver.find_element(by.XPATH, Definitions.OtherInfoInput_XPATH), profile.Other); print(f'[INFO] {str(datetime.datetime.now())} 完成 其他必要信息 更改')
 
     FindElementIfExists(driver, Definitions.AddDeviceButton_XPATH, 1).click()
     FindElementIfExists(driver, Definitions.DeviceChooseCheckBox_XPATH, 0.5).click()
@@ -93,9 +93,8 @@ def AutoFillContent():
 
 # 以下：主程序
 print(timeNow)
-Definitions.GetProfilePath()
-Definitions.GetConfigures(Definitions.FilePath)
-print(f'[REDY] {str(datetime.datetime.now())} 已从{Definitions.FilePath}获取配置' )
+profile = Definitions.Configures()
+print(f'[REDY] {str(datetime.datetime.now())} 已从{profile.FilePath}获取配置' )
 try:
     driver = webdriver.Edge()
     driver.get("https://uom.caac.gov.cn/")

@@ -1,0 +1,37 @@
+{
+    "profileName": "Profile1",
+    "app":{
+        "usingDefaultTime": "True",
+        "createNewFile": "NewPage"
+    },
+
+    "login":{
+        "phoneNum": "*****",
+        "autoLogin": "False"
+    },
+    "content":{
+        "startTime": "2024-12-06 11:45",
+        "finishTime": "2024-12-06 17:54",
+        "expectStartHour": "12",
+        "expectFinishHour": "16",
+        "height": "120",
+        "location": "*****",
+        "emergencyProcess": "紧急情况立即前往现场检查并降落",
+        "specialReq": "无",
+        "abilities": "Remote ID，导航定位，遥控器信号等可被监视",
+        "speed": "垂直起降；水平最大10m/s，垂直最大3m/s",
+        "controlAbilities": "无",
+        "radar": "无",
+        "other": "将使用辅助飞行并最大程度保证飞行安全，将绕开敏感并避开敏感区域，做到安全飞行。希望批准，谢谢！"
+    },
+    "controller":{
+        "using": "1"
+    },
+    "airspace":{
+        "using": "1",
+        "points":{
+            "1": ["unk", "unk"],
+            "2": ["unk", "unk"]
+        }
+    } 
+}

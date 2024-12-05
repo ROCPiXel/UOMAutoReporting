@@ -2,7 +2,8 @@
     "profileName": "Profile1",
     "app":{
         "usingDefaultTime": "True",
-        "createNewFile": "NewPage"
+        "createNewFile": "NewPage",
+        "autoReport": "False"
     },
 
     "login":{

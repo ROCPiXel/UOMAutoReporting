@@ -53,8 +53,9 @@ def CopyTask():
     print(f'[INFO] {str(datetime.datetime.now())} ----------已完成复制飞行任务，准备自动填写信息----------')
 
 def CreateNewTask():
-    for _ in range(3): 
-        driver.find_element(by.XPATH, Definitions.TabButton_XPATH).click()
+   # for _ in range(3): 
+        #driver.find_element(by.XPATH, Definitions.TabButton_XPATH).click()
+    time.sleep(3)
     FindElementIfExists(driver, Definitions.CreateNewTaskButton_XPATH, 1).click() # 仅适配单一模板，等待后期更新.
     print(f'[INFO] {str(datetime.datetime.now())} ----------已完成新建飞行任务，准备自动填写信息----------')
 

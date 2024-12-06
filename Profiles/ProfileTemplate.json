@@ -3,17 +3,18 @@
     "app":{
         "usingDefaultTime": "True",
         "createNewFile": "NewPage",
-        "autoReport": "False"
+        "autoReport": "Save",
+        "usingLogger": "True"
     },
 
     "login":{
-        "phoneNum": "*****",
+        "phoneNum": "****",
         "autoLogin": "False"
     },
     "content":{
         "startTime": "2024-12-06 11:45",
         "finishTime": "2024-12-06 17:54",
-        "expectStartHour": "12",
+        "expectStartHour": "8",
         "expectFinishHour": "16",
         "height": "120",
         "location": "*****",

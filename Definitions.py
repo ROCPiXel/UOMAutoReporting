@@ -13,9 +13,10 @@ TabButton_XPATH = '//*[@id="app"]/div/div/div[1]/div[3]/span/strong[9]'
 Menu1_XPATH = '//*[@id="app"]/div/div/div[2]/div[1]/div/div[2]/div/div/div/ul/div[2]/li/div/span'
 Menu2_XPATH = '//*[@id="app"]/div/div/div[2]/div[1]/div/div[2]/div/div/div/ul/div[2]/li/ul/div/li/span/div/div'
 CopyTaskButton_XPATH = '//*[@id="app"]/div/section/div/div[2]/div[4]/div[2]/table/tbody/tr[1]/td[12]/div/button[1]/span'
-CreateNewTaskButton_XPATH = '//*[@id="app"]/div/section/div/div[1]/div[1]/button/span'
+CreateNewTaskButton_XPATH = '//*[@id="app"]/div/section/div/div[1]/div[1]/button'
 
 IFrame1_XPATH = '//*[@id="main-body-content"]/div[3]/div/div/div[2]/iframe'
+IFrame2_XPATH = '//*[@id="main-body-content"]/div[3]/div/div/div[3]/iframe'
 IFrameNewPage_XPATH = '//*[@id="main-body-content"]/div[3]/div/div/div[2]/iframe'
 IFrameCopyPage_XPATH = '//*[@id="main-body-content"]/div[3]/div/div/div[3]/iframe'
 
@@ -24,7 +25,7 @@ ChangeTypeButton_XPATH = '/html/body/div[2]/div[1]/div[1]/ul/li/span'
 StartTimeBox_SELECTOR = '#app > div > section > div > form > div:nth-child(1) > div.fromDiv > span > div:nth-child(1) > div > div > div.ivu-date-picker-rel > div > div > input'
 FinishTImeBox_SELECTOR = '#app > div > section > div > form > div:nth-child(1) > div.fromDiv > span > div:nth-child(2) > div > div > div.ivu-date-picker-rel > div > div > input'
 StartTimeBox_XPATH = '//*[@id="app"]/div/section/div/form/div[1]/div[3]/span/div[1]/div/div/div[1]/div/div/input'
-FinishTimeBox_XPATH = '//*[@id="app"]/div/section/div/form/div[1]/div[3]/span/div[2]/div/div/div[1]/div/div/input'
+FinishTimeBox_XPATH = '//*[@id="app"]/div/section/div/form/div[1]/div[3]/span/div[2]/div/div[1]/div[1]/div/div/input'
 
 HeightInput_XPATH = '//*[@id="app"]/div/section/div/form/div[1]/div[3]/div[5]/div/div/input'
 ContactInput_XPATH = '//*[@id="app"]/div/section/div/form/div[1]/div[3]/div[6]/div/div/textarea'
@@ -38,12 +39,13 @@ RadarInput_XPATH = '//*[@id="app"]/div/section/div/form/div[1]/div[3]/div[13]/di
 OtherInfoInput_XPATH = '//*[@id="app"]/div/section/div/form/div[1]/div[3]/div[14]/div/div/textarea'
 
 AddDeviceButton_XPATH = '//*[@id="app"]/div/section/div/form/div[2]/div[1]/div/div/button/span'
-DeviceChooseCheckBox_rPATH = '/html/body/div[2]/div/div/div[1]/div[1]/div[3]/table/tbody/tr[1]/td[1]/div/label/span/span'
 DeviceChooseCheckBox_XPATH = "//*[starts-with(@id, 'vlip')]/div/div[1]/div[1]/div[3]/table/tbody/tr[1]/td[1]/div/label/span/span"
-DeviceDoneButton_rPATH = '/html/body/div[2]/div/div/div[1]/div[3]/button[1]'
+DeviceChooseCheckBox2_XPATH = "//*[starts-with(@id, 'vlip')]/div/div[1]/div[1]/div[3]/table/tbody/tr[2]/td[1]/div/label/span/span"
 DeviceDoneButton_XPATH = "//*[starts-with(@id, 'vlip')]/div/div[1]/div[3]/button[1]/span"
+#
 AddControllerButton_XPATH = '//*[@id="app"]/div/section/div/form/div[2]/div[4]/div/div/button/span'
 ControllerChooseCheckBox_XPATH = "//*[starts-with(@id, 'vlip')]/div/div[1]/div[1]/div[3]/table/tbody/tr/td[1]/div/label/span/span"
+# ControllerChooseCheckBox2_XPATH = "//*[starts-with(@id, 'vlip')]/div/div[1]/div[1]/div[3]/table/tbody/tr/td[1]/div/label/span/span"
 ControllerDoneButton_XPATH = "//*[starts-with(@id, 'vlip')]/div/div[1]/div[3]/button[1]/span"
 ChangeAirspaceButton_XPATH = '//*[@id="app"]/div/section/div/form/div[5]/div[1]/div/div[3]/table/tbody/tr[1]/td[1]/div/label/span[1]/span'
 NullCheckBox_XPATH = '//*[@id="app"]/div/section/div/form/div[1]/div[3]/div[15]/div/label[6]/span[2]'
@@ -53,7 +55,11 @@ InnerFrame2_XPATH = "//div[starts-with(@id, 'notification_')]"
 
 SaveFileButton_XPATH = '//*[@id="app"]/div/section/div/form/div[6]/div/button[2]'
 FinishButton_XPATH = '//*[@id="app"]/div/section/div/form/div[6]/div/button[3]'
+SubmitButton_XPATH = "/html/body/div[3]/div/div[3]/button[2]"
+SubmitButton_SECTOR = "body > div.el-message-box__wrapper > div > div.el-message-box__btns > button.el-button.el-button--default.el-button--small.el-button--primary"
 CancelButton_XPATH = '//*[@id="app"]/div/section/div/form/div[6]/div/button[1]'
+
+IDText_XPATH = '//*[@id="app"]/div/section/div/div[2]/div[3]/table/tbody/tr[1]/td[3]/div'
 
 # 以下：默认配置/读取设置
 
@@ -64,6 +70,7 @@ class Configures:
             profileCfg = json.load(profile)
             self.UsingDefaultTime = profileCfg['app']['usingDefaultTime']
             self.UsingAutoReport = profileCfg['app']['autoReport']
+            self.UsingLogger = True if profileCfg['app']['usingLogger']=='True' else False
     
             self.PhoneNum = profileCfg['login']['phoneNum']
             self.StartTime = profileCfg['content']['startTime']
@@ -83,7 +90,7 @@ class Configures:
 
         if self.UsingDefaultTime == "True":
             self.StartTime = self.DefaultStartTime()
-            self.inishTime = self.DefaultFinishTime()
+            self.FinishTime = self.DefaultFinishTime()
 
     def GetProfilePath(self):
         with open('Configures.json', 'r') as cfg:

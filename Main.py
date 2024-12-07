@@ -5,6 +5,9 @@ import time
 import datetime
 import Definitions
 import Logger
+import re
+import base64
+import Captcha
 
 # 以下：基础方法
 def ElementIsExists(drive, xpath):
@@ -22,12 +25,6 @@ def FindElementIfExists(drive, xpath, waitTime=1):
         time.sleep(waitTime)
     return drive.find_element(by.XPATH, xpath)
 
-def TryInputPhoneNum():
-    FindElementIfExists(driver, Definitions.PhoneNumInput_XPATH, waitTime=1).send_keys(profile.PhoneNum)
-
-def TryGetTabButton():
-    FindElementIfExists(driver, Definitions.TabButton_XPATH, waitTime=1).click()
-
 def BackspaceClean(element, deviation = 10): # From: https://blog.csdn.net/xianzhe_/article/details/119697764
     lens = len(element.get_attribute("value")) + deviation
     for i in range(lens):
@@ -40,7 +37,41 @@ def CleanWithSend(element, text:str, **kwargs):
     BackspaceClean(element, **kwargs)
     element.send_keys(text)
 
+# 以下：登录界面
+def FillCaptcha(isFirstTime=False):
+    global CaptchaIsSuccess
+    try:
+        time.sleep(0.5)
+        driver.find_element(by.XPATH, Definitions.MsgBoxInfo_XPATH)
+        driver.find_element(by.XPATH, Definitions.CloseBox_XPATH).click()
+        CaptchaIsSuccess = False
+    except:
+        CaptchaIsSuccess = False if isFirstTime else True
+    #time.sleep(1)
+    image = FindElementIfExists(driver, Definitions.CaptchaImage_XPATH)
+    #image.click()
+    #imageLink = image.get_attribute('src')
+    imagePath = f'CaptchaPic\\{str(timeNow.strftime("%Y-%m-%d-%H%M%S.%f"))}.jpg'
+    with open(imagePath, 'wb') as f:
+        f.write(base64.b64decode(image.get_attribute('src').split('jpeg;base64,')[-1]))
+    captcha = Captcha.Captcha(imagePath)
+    #time.sleep(1)
+    CleanWithSend(driver.find_element(by.XPATH, Definitions.CaptchaInput_XPATH), keys.BACKSPACE)
+    CleanWithSend(driver.find_element(by.XPATH, Definitions.CaptchaInput_XPATH), Captcha.GetCalcResult(captcha.OCR()))
+    #time.sleep(1)
+    try: 
+        driver.find_element(by.XPATH, Definitions.CloseBox_XPATH).click() 
+    except:
+        pass
+    #return captcha.OCR()
+
+def TryInputPhoneNum():
+    FindElementIfExists(driver, Definitions.PhoneNumInput_XPATH, waitTime=1).send_keys(profile.PhoneNum)
+
 # 以下：操作方法，负责模拟用户状态
+def TryGetTabButton():
+    FindElementIfExists(driver, Definitions.TabButton_XPATH, waitTime=1).click()
+
 def OpenMenu():
     FindElementIfExists(driver, Definitions.Menu1_XPATH, 1).click() # 飞行活动申请
     FindElementIfExists(driver, Definitions.Menu2_XPATH, 1).click() # 一般飞行活动
@@ -104,6 +135,7 @@ def AutoFillContent():
 
 # 以下：主程序
 # 初始化方法
+CaptchaIsSuccess = False
 timeNow = datetime.datetime.now()
 profile = Definitions.Configures()
 logger = Logger.Logger(f'Log\\{str(timeNow.strftime("%Y-%m-%d-%H%M%S.%f"))}.log', usingLogger=profile.UsingLogger)
@@ -117,7 +149,13 @@ except:
     logger.pwl(tag='[ERR]', content='无法初始化网页，请重试')
 
 TryInputPhoneNum()
+FillCaptcha(True)
+while CaptchaIsSuccess != True:
+    time.sleep(1)
+    FillCaptcha(False)
+driver.find_element(by.XPATH, Definitions.GetSmscodeButton_XPATH).click()
 logger.pwl(content='----------在接下来的页面中进行登录----------')
+
 TryGetTabButton()
 OpenMenu()
 

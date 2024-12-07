@@ -19,7 +19,7 @@ CaptchaInput_XPATH = '//*[@id="lastLine"]/div/div/input'
 GetSmscodeButton_XPATH = '//*[@id="portal"]/section/div[2]/div/div/div[2]/div[1]/div/div/div/form/div[3]/div/span[1]/span'
 MsgBoxInfo_XPATH = '/html/body/div[6]/div[2]/div/div/div/div/div[2]/div'
 MsgBoxInfo_CLASS = 'ivu-modal-confirm-body'
-CloseBox_XPATH = '/html/body/div[6]/div[2]/div/div/div/div/div[3]/button'
+CloseBox_XPATH = '/html/body/div[7]/div[2]/div/div/div/div/div[3]/button'
 CloseBox_CLASS = 'ivu-btn ivu-btn-primary'
 
 IFrame1_XPATH = '//*[@id="main-body-content"]/div[3]/div/div/div[2]/iframe'
@@ -78,6 +78,7 @@ class Configures:
             self.UsingDefaultTime = profileCfg['app']['usingDefaultTime']
             self.UsingAutoReport = profileCfg['app']['autoReport']
             self.UsingLogger = True if profileCfg['app']['usingLogger']=='True' else False
+            self.AutoCaptcha = True if profileCfg['app']['autoCaptcha']=='True' else False
     
             self.PhoneNum = profileCfg['login']['phoneNum']
             self.StartTime = profileCfg['content']['startTime']

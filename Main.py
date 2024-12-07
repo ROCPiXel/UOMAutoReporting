@@ -42,28 +42,28 @@ def FillCaptcha(isFirstTime=False):
     global CaptchaIsSuccess
     try:
         time.sleep(0.5)
-        driver.find_element(by.XPATH, Definitions.MsgBoxInfo_XPATH)
         driver.find_element(by.XPATH, Definitions.CloseBox_XPATH).click()
         CaptchaIsSuccess = False
     except:
         CaptchaIsSuccess = False if isFirstTime else True
-    #time.sleep(1)
-    image = FindElementIfExists(driver, Definitions.CaptchaImage_XPATH)
-    #image.click()
-    #imageLink = image.get_attribute('src')
+
+    try:
+        image = FindElementIfExists(driver, Definitions.CaptchaImage_XPATH)
+    except:
+        driver.find_element(by.XPATH, Definitions.CloseBox_XPATH).click()
+        time.sleep(1)
+        image = FindElementIfExists(driver, Definitions.CaptchaImage_XPATH)
     imagePath = f'CaptchaPic\\{str(timeNow.strftime("%Y-%m-%d-%H%M%S.%f"))}.jpg'
     with open(imagePath, 'wb') as f:
         f.write(base64.b64decode(image.get_attribute('src').split('jpeg;base64,')[-1]))
     captcha = Captcha.Captcha(imagePath)
-    #time.sleep(1)
+
     CleanWithSend(driver.find_element(by.XPATH, Definitions.CaptchaInput_XPATH), keys.BACKSPACE)
     CleanWithSend(driver.find_element(by.XPATH, Definitions.CaptchaInput_XPATH), Captcha.GetCalcResult(captcha.OCR()))
-    #time.sleep(1)
     try: 
         driver.find_element(by.XPATH, Definitions.CloseBox_XPATH).click() 
     except:
         pass
-    #return captcha.OCR()
 
 def TryInputPhoneNum():
     FindElementIfExists(driver, Definitions.PhoneNumInput_XPATH, waitTime=1).send_keys(profile.PhoneNum)
@@ -149,11 +149,16 @@ except:
     logger.pwl(tag='[ERR]', content='无法初始化网页，请重试')
 
 TryInputPhoneNum()
-FillCaptcha(True)
-while CaptchaIsSuccess != True:
-    time.sleep(1)
-    FillCaptcha(False)
-driver.find_element(by.XPATH, Definitions.GetSmscodeButton_XPATH).click()
+if profile.AutoCaptcha:
+    FillCaptcha(True)
+    driver.find_element(by.XPATH, Definitions.GetSmscodeButton_XPATH).click()
+    i = 0
+    while CaptchaIsSuccess != True:
+        i += 1
+        #time.sleep(0.1)
+        FillCaptcha(False)
+        driver.find_element(by.XPATH, Definitions.GetSmscodeButton_XPATH).click()
+        logger.pwl('[WARN]', content=f'验证码出现错误，重试{i}次')
 logger.pwl(content='----------在接下来的页面中进行登录----------')
 
 TryGetTabButton()

@@ -4,20 +4,21 @@
         "usingDefaultTime": "True",
         "createNewFile": "NewPage",
         "autoReport": "Save",
-        "usingLogger": "True"
+        "usingLogger": "True",
+        "autoCaptcha": "True"
     },
 
     "login":{
-        "phoneNum": "****",
+        "phoneNum": "*********",
         "autoLogin": "False"
     },
     "content":{
         "startTime": "2024-12-06 11:45",
         "finishTime": "2024-12-06 17:54",
-        "expectStartHour": "8",
-        "expectFinishHour": "16",
+        "expectStartHour": "7",
+        "expectFinishHour": "17",
         "height": "120",
-        "location": "*****",
+        "location": "*******",
         "emergencyProcess": "紧急情况立即前往现场检查并降落",
         "specialReq": "无",
         "abilities": "Remote ID，导航定位，遥控器信号等可被监视",
